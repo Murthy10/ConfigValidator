@@ -53,7 +53,8 @@ def generate_code(sections):
     rows.append(Row(intents=4, code="if not config_parser.has_option(section['section'], option['option']):"))
     rows.append(Row(intents=5,
                     code="raise Exception('Option {0} is not in section {1}!'.format(option['option'], section['section']))"))
-    rows.append(Row(intents=4, code="setattr(self, option['option'], option['fallback'])"))
+    rows.append(Row(intents=4,
+                    code="setattr(self, option['option'], config_parser.get(section['section'], option['option'], fallback=option['fallback']))"))
     rows.append(Row(code="\n", line_break=False))
 
     rows.append(Row(intents=1, code="@staticmethod"))

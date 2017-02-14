@@ -6,8 +6,8 @@ class Configuration:
     def __init__(self, config_file_path=''):
         config_parser = self.read_configuration_file(config_file_path)
         sections = [
-            {'options': [{'fallback': 'imagery.url.org', 'option': 'url'}, {'fallback': '19', 'option': 'zoomlevel'}], 'section': 'IMAGERY'},
-            {'options': [{'fallback': 'SuperServer', 'option': 'name'}, {'fallback': '127.0.0.1', 'option': 'host'}, {'fallback': '1,2,3,4', 'option': 'list'}], 'section': 'Server'},
+            {'section': 'IMAGERY', 'options': [{'option': 'url', 'fallback': 'imagery.url.org'}, {'option': 'zoomlevel', 'fallback': '19'}]},
+            {'section': 'Server', 'options': [{'option': 'name', 'fallback': 'SuperServer'}, {'option': 'host', 'fallback': '127.0.0.1'}, {'option': 'list', 'fallback': '1,2,3,4'}]},
         ]
         self.check_sections(config_parser, sections)
         self.set_options(config_parser, sections)
@@ -17,7 +17,7 @@ class Configuration:
             for option in section['options']:
                 if not config_parser.has_option(section['section'], option['option']):
                     raise Exception('Option {0} is not in section {1}!'.format(option['option'], section['section']))
-                setattr(self, option['option'], option['fallback'])
+                setattr(self, option['option'], config_parser.get(section['section'], option['option'], fallback=option['fallback']))
 
     @staticmethod
     def read_configuration_file(config_file_path):
