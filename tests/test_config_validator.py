@@ -1,7 +1,7 @@
 import pytest
 import configparser
-from src import config_validator
-from src import example_configuration
+from ConfigValidator import config_validator
+from ConfigValidator import example_configuration
 
 
 def test_config_validator(path):
@@ -15,8 +15,8 @@ def test_config_validator(path):
 
     configuration = example_configuration.Configuration(path + 'config.ini')
 
-    assert configuration.url == 'imagery.url.org'
-    assert configuration.name == 'SuperServer'
+    assert configuration.IMAGERY.url == 'imagery.url.org'
+    assert configuration.Server.name == 'SuperServer'
 
 
 def test_config_validator_bad(path):
