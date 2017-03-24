@@ -49,12 +49,15 @@ def generate_code(sections):
 
     rows.append(Row(intents=1, code="def set_options(self, config_parser, sections):"))
     rows.append(Row(intents=2, code="for section in sections:"))
+    rows.append(Row(intents=3, code="SectionClass = type(section['section'], (), {})"))
+    rows.append(Row(intents=3, code="section_class = SectionClass()"))
     rows.append(Row(intents=3, code="for option in section['options']:"))
     rows.append(Row(intents=4, code="if not config_parser.has_option(section['section'], option['option']):"))
     rows.append(Row(intents=5,
                     code="raise Exception('Option {0} is not in section {1}!'.format(option['option'], section['section']))"))
     rows.append(Row(intents=4,
-                    code="setattr(self, option['option'], config_parser.get(section['section'], option['option'], fallback=option['fallback']))"))
+                    code="setattr(section_class, option['option'], config_parser.get(section['section'], option['option'], fallback=option['fallback']))"))
+    rows.append(Row(intents=3, code="setattr(self, section['section'], section_class)"))
     rows.append(Row(code="\n", line_break=False))
 
     rows.append(Row(intents=1, code="@staticmethod"))
