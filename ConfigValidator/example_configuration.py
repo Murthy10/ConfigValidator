@@ -7,7 +7,7 @@ class Configuration:
         config_parser = self.read_configuration_file(config_file_path)
         sections = [
             {'options': [{'option': 'url', 'fallback': 'imagery.url.org'}, {'option': 'zoomlevel', 'fallback': '19'}], 'section': 'IMAGERY'},
-            {'options': [{'option': 'name', 'fallback': 'SuperServer'}, {'option': 'host', 'fallback': '127.0.0.1'}, {'option': 'list', 'fallback': '1,2,3,4'}], 'section': 'Server'},
+            {'options': [{'option': 'name', 'fallback': 'SuperServer'}, {'option': 'host', 'fallback': '127.0.0.1'}, {'option': 'list', 'fallback': '1,2,3,4'}], 'section': 'SERVER'},
         ]
         self.check_sections(config_parser, sections)
         self.set_options(config_parser, sections)
