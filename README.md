@@ -4,6 +4,7 @@ It automatically generates a Configuration class out of your configuration file 
 
 ## Usage
 Generate a python Configuration class from the configuration file (.ini) to validate and access the configuration parameters.  
+
 ![Alt text](img/ConfigValidator.png)
 
  1. Create a configuration file (.ini) and add the parameters you need for your application.
