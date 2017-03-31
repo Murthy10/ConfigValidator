@@ -18,6 +18,48 @@ Generate a python Configuration class from the configuration file (.ini) to vali
     ```bash
     python3 config_validator.py -c config.ini -o configuration.py
     ```
+    
+    The resulting configuration.py will look like the following python script and is ready to use. 
+    
+    ```python
+    import configparser
+    import os
+    
+    
+    class Configuration:
+        def __init__(self, config_file_path=''):
+            config_parser = self.read_configuration_file(config_file_path)
+            sections = [
+                {'options': [{'fallback': 'SuperServer', 'option': 'name'}, {'fallback': '127.0.0.1', 'option': 'host'}], 'section': 'SERVER'},
+            ]
+            self.check_sections(config_parser, sections)
+            self.set_options(config_parser, sections)
+    
+        def set_options(self, config_parser, sections):
+            for section in sections:
+                SectionClass = type(section['section'], (), {})
+                section_class = SectionClass()
+                for option in section['options']:
+                    if not config_parser.has_option(section['section'], option['option']):
+                        raise Exception('Option {0} is not in section {1}!'.format(option['option'], section['section']))
+                    setattr(section_class, option['option'], config_parser.get(section['section'], option['option'], fallback=option['fallback']))
+                setattr(self, section['section'], section_class)
+    
+        @staticmethod
+        def read_configuration_file(config_file_path):
+            if not os.path.isfile(config_file_path):
+                raise Exception("The config file does not exist!")
+            config_parser = configparser.ConfigParser()
+            config_parser.read(config_file_path)
+            return config_parser
+    
+        @staticmethod
+        def check_sections(config_parser, sections):
+            for section in sections:
+                if not config_parser.has_section(section['section']):
+                    raise Exception('Section {0} is not in config file!'.format(section['section']))
+    ```
+    
  3. Well, everything is all ready done for you and the Configuration class is ready to us.
     Now you are able to simply access the configuration parameters in an object oriented way.
     And if the user of your application has missed a parameter in his configuration file he will get an exception. 
